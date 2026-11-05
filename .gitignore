@@ -49,6 +49,7 @@ android/key.properties
 *.pem
 google-services.json
 GoogleService-Info.plist
+ios/Flutter/Secrets.xcconfig
 
 # --- Generated code (built in CI with build_runner) ---
 *.g.dart
