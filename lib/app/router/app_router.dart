@@ -6,7 +6,9 @@ import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
 import '../../features/auth/presentation/pages/splash_page.dart';
 import '../../features/auth/presentation/providers/auth_controller.dart';
+import '../../features/business/presentation/pages/business_form_page.dart';
 import '../../features/business/presentation/pages/business_home_page.dart';
+import '../../features/business/presentation/pages/offer_form_page.dart';
 import '../../features/offers/presentation/pages/offer_detail_page.dart';
 import '../../features/offers/presentation/pages/offers_home_page.dart';
 import 'app_routes.dart';
@@ -35,7 +37,19 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           ),
         ],
       ),
-      GoRoute(path: AppRoutes.business, builder: (context, state) => const BusinessHomePage()),
+      GoRoute(
+        path: AppRoutes.business,
+        builder: (context, state) => const BusinessHomePage(),
+        routes: [
+          GoRoute(path: 'profile', builder: (context, state) => const BusinessFormPage()),
+          // 'new' must come before ':offerId' so it is not read as an id.
+          GoRoute(path: 'offers/new', builder: (context, state) => const OfferFormPage()),
+          GoRoute(
+            path: 'offers/:offerId',
+            builder: (context, state) => OfferFormPage(offerId: state.pathParameters['offerId']),
+          ),
+        ],
+      ),
     ],
   );
 

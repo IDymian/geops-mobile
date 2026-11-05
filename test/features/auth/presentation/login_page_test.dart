@@ -5,8 +5,10 @@ import 'package:geops_mobile/app/app.dart';
 import 'package:geops_mobile/core/errors/failure.dart';
 import 'package:geops_mobile/core/location/location_service.dart';
 import 'package:geops_mobile/features/auth/data/auth_providers.dart';
+import 'package:geops_mobile/features/business/data/business_repository_impl.dart';
 
 import '../../../helpers/fake_auth_repository.dart';
+import '../../../helpers/fake_business.dart';
 import '../../../helpers/fake_offers.dart';
 
 void main() {
@@ -16,6 +18,7 @@ void main() {
         overrides: [
           authRepositoryProvider.overrideWithValue(repository),
           locationServiceProvider.overrideWithValue(FakeLocationService(initial: LocationAccess.denied)),
+          businessRepositoryProvider.overrideWithValue(FakeBusinessRepository()),
         ],
         child: const GeopsApp(),
       ),
