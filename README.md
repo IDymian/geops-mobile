@@ -10,7 +10,7 @@
 
 ## Español
 
-**GeoPS Mobile** conecta negocios locales con consumidores mediante ofertas y cupones hiperlocales según su ubicación. Es la versión móvil de un proyecto web universitario y consume la API [geops-api](https://github.com/IDymian/geops-api).
+**GeoPS Mobile** conecta negocios locales con consumidores mediante ofertas y cupones hiperlocales según su ubicación. Es la versión móvil de un proyecto web universitario y consume la API [geops-api](https://github.com/geops-app/geops-api).
 
 ### Funcionalidades
 
@@ -62,7 +62,7 @@ La configuración se pasa con `--dart-define-from-file` en lugar de empaquetar u
 
 ## English
 
-**GeoPS Mobile** connects local businesses with consumers through hyperlocal, location-based offers and coupons. It is the mobile version of a university web project and consumes the [geops-api](https://github.com/IDymian/geops-api) backend.
+**GeoPS Mobile** connects local businesses with consumers through hyperlocal, location-based offers and coupons. It is the mobile version of a university web project and consumes the [geops-api](https://github.com/geops-app/geops-api) backend.
 
 ### Features
 
