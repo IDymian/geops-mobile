@@ -3,14 +3,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geops_mobile/app/app.dart';
 import 'package:geops_mobile/core/errors/failure.dart';
+import 'package:geops_mobile/core/location/location_service.dart';
 import 'package:geops_mobile/features/auth/data/auth_providers.dart';
 
 import '../../../helpers/fake_auth_repository.dart';
+import '../../../helpers/fake_offers.dart';
 
 void main() {
   Future<FakeAuthRepository> pumpApp(WidgetTester tester, FakeAuthRepository repository) async {
     await tester.pumpWidget(
-      ProviderScope(overrides: [authRepositoryProvider.overrideWithValue(repository)], child: const GeopsApp()),
+      ProviderScope(
+        overrides: [
+          authRepositoryProvider.overrideWithValue(repository),
+          locationServiceProvider.overrideWithValue(FakeLocationService(initial: LocationAccess.denied)),
+        ],
+        child: const GeopsApp(),
+      ),
     );
     await tester.pumpAndSettle();
     return repository;
@@ -64,7 +72,7 @@ void main() {
     await tester.tap(find.byKey(const Key('login.submit')));
     await tester.pumpAndSettle();
 
-    expect(find.text('Hola, Ana Torres'), findsOneWidget);
+    expect(find.text('Ofertas cerca de ti'), findsOneWidget);
     expect(repository.calls, ['login:ana@example.com']);
 
     await tester.tap(find.byTooltip('Cerrar sesión'));
