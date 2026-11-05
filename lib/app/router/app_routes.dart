@@ -7,6 +7,8 @@ abstract final class AppRoutes {
   /// Consumer home (offers map from Day 2).
   static const String home = '/home';
 
+  static String offerDetail(String offerId) => '$home/offers/$offerId';
+
   /// Provider home (business panel from Day 2).
   static const String business = '/business';
 
