@@ -3,6 +3,27 @@
 All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [0.2.0] - 2026-11-05
+
+Second sprint (Day 2 of the MVP): offers near the user and the business panel.
+
+### Added
+
+- Offers near the consumer, on a Google Map (their position, the search radius and one marker per offer) or as a list with distance, price in soles, discount and expiry.
+- Filters by category and radius (500 m to 10 km), pull to refresh, and an offer detail page with the business.
+- Location only while the app is in use, asked after a screen that explains why; a blocked permission points to the settings and a disabled GPS asks to turn it on.
+- Business panel for providers: register or edit the business, set its location from the device or with a pin on a map.
+- Offer management: publish and edit offers, see each one's status (live, scheduled, paused, expired) and pause or reactivate it with a switch.
+- Native Google Maps configuration that reads the key from `android/local.properties` or `ios/Flutter/Secrets.xcconfig` (both ignored by Git).
+
+### Changed
+
+- CI uses `actions/setup-java` v6.
+
+### Removed
+
+- Unused `cupertino_icons` dependency.
+
 ## [0.1.0] - 2026-11-04
 
 First sprint (Day 1 of the MVP): app foundation and authentication.
@@ -20,4 +41,5 @@ First sprint (Day 1 of the MVP): app foundation and authentication.
 - CI on GitHub Actions (format, analyze, tests, debug APK) and Dependabot.
 - Nightly backup scripts to the `wip/nightly` branch.
 
+[0.2.0]: https://github.com/geops-app/geops-mobile/releases/tag/v0.2.0
 [0.1.0]: https://github.com/geops-app/geops-mobile/releases/tag/v0.1.0
