@@ -16,6 +16,9 @@ abstract final class Formatters {
   /// `S/ 5.00` (Peruvian soles).
   static String price(double amount) => 'S/ ${amount.toStringAsFixed(2)}';
 
+  /// `12/11/2026 18:00`.
+  static String dateTime(DateTime value) => DateFormat('dd/MM/yyyy HH:mm').format(value);
+
   /// `Vence hoy a las 18:00` or `Vence el 12/11`.
   static String endsAt(DateTime endsAt, {DateTime? now}) {
     final today = now ?? DateTime.now();
