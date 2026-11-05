@@ -1,40 +1,37 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-/// Route paths in one place, so screens never hard-code strings.
-abstract final class AppRoutes {
-  static const String home = '/';
-}
+import '../../features/auth/presentation/pages/login_page.dart';
+import '../../features/auth/presentation/pages/register_page.dart';
+import '../../features/auth/presentation/pages/splash_page.dart';
+import '../../features/auth/presentation/providers/auth_controller.dart';
+import '../../features/business/presentation/pages/business_home_page.dart';
+import '../../features/offers/presentation/pages/offers_home_page.dart';
+import 'app_routes.dart';
+import 'auth_redirect.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
+  // Re-runs the redirect whenever the session changes (login, logout, expiry).
+  final sessionChanged = ValueNotifier<int>(0);
+  ref.listen(authControllerProvider, (_, _) => sessionChanged.value++);
+
   final router = GoRouter(
-    initialLocation: AppRoutes.home,
-    routes: [GoRoute(path: AppRoutes.home, builder: (context, state) => const _WelcomePage())],
+    initialLocation: AppRoutes.splash,
+    refreshListenable: sessionChanged,
+    redirect: (context, state) => authRedirect(ref.read(authControllerProvider), state.matchedLocation),
+    routes: [
+      GoRoute(path: AppRoutes.splash, builder: (context, state) => const SplashPage()),
+      GoRoute(path: AppRoutes.login, builder: (context, state) => const LoginPage()),
+      GoRoute(path: AppRoutes.register, builder: (context, state) => const RegisterPage()),
+      GoRoute(path: AppRoutes.home, builder: (context, state) => const OffersHomePage()),
+      GoRoute(path: AppRoutes.business, builder: (context, state) => const BusinessHomePage()),
+    ],
   );
-  ref.onDispose(router.dispose);
+
+  ref.onDispose(() {
+    router.dispose();
+    sessionChanged.dispose();
+  });
   return router;
 });
-
-/// Temporary landing page until the auth feature adds the real flow.
-class _WelcomePage extends StatelessWidget {
-  const _WelcomePage();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.place_outlined, size: 64, color: Theme.of(context).colorScheme.primary),
-            const SizedBox(height: 16),
-            Text('GeoPS', style: Theme.of(context).textTheme.headlineMedium),
-            const SizedBox(height: 8),
-            const Text('Ofertas cerca de ti'),
-          ],
-        ),
-      ),
-    );
-  }
-}

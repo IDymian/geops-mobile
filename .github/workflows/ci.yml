@@ -32,8 +32,9 @@ jobs:
       - name: Generate code (freezed / json_serializable)
         run: dart run build_runner build --delete-conflicting-outputs
 
+      # Only tracked sources: generated *.g.dart / *.freezed.dart are gitignored and not ours to format.
       - name: Check formatting
-        run: dart format --output=none --set-exit-if-changed lib test
+        run: dart format --output=none --set-exit-if-changed $(git ls-files 'lib/*.dart' 'test/*.dart')
 
       - name: Analyze
         run: flutter analyze
