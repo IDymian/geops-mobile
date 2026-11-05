@@ -20,4 +20,4 @@ First sprint (Day 1 of the MVP): app foundation and authentication.
 - CI on GitHub Actions (format, analyze, tests, debug APK) and Dependabot.
 - Nightly backup scripts to the `wip/nightly` branch.
 
-[0.1.0]: https://github.com/IDymian/geops-mobile/releases/tag/v0.1.0
+[0.1.0]: https://github.com/geops-app/geops-mobile/releases/tag/v0.1.0
