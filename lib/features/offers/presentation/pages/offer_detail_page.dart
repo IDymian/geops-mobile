@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/utils/formatters.dart';
+import '../../../coupons/presentation/widgets/available_coupons_section.dart';
 import '../offers_failure_messages.dart';
 import '../providers/offers_providers.dart';
 
@@ -53,6 +54,7 @@ class OfferDetailPage extends ConsumerWidget {
             const SizedBox(height: 4),
             Text(Formatters.endsAt(offer.endsAt)),
             if (offer.description != null) ...[const SizedBox(height: 16), Text(offer.description!)],
+            AvailableCouponsSection(offerId: offer.id),
             const Divider(height: 40),
             ListTile(
               contentPadding: EdgeInsets.zero,

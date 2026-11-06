@@ -1,5 +1,8 @@
+import 'package:geops_mobile/core/errors/failure.dart';
 import 'package:geops_mobile/features/business/domain/entities/business.dart';
+import 'package:geops_mobile/features/business/domain/entities/business_coupons.dart';
 import 'package:geops_mobile/features/business/domain/repositories/business_repository.dart';
+import 'package:geops_mobile/features/coupons/domain/entities/coupon.dart';
 import 'package:geops_mobile/features/offers/domain/entities/offer.dart';
 
 /// Fixed "now" for the business panel tests.
@@ -21,13 +24,26 @@ ManagedOffer managedOffer(String id, String title, {bool active = true, DateTime
 
 /// In-memory [BusinessRepository] that records what the UI sends.
 class FakeBusinessRepository implements BusinessRepository {
-  FakeBusinessRepository({this.business, List<ManagedOffer> offers = const []}) : _offers = [...offers];
+  FakeBusinessRepository({
+    this.business,
+    List<ManagedOffer> offers = const [],
+    List<ProviderCoupon> coupons = const [],
+    this.statsResult,
+  }) : _offers = [...offers],
+       _coupons = [...coupons];
 
   Business? business;
   final List<ManagedOffer> _offers;
   BusinessInput? savedBusiness;
   OfferInput? createdOffer;
   final Map<String, OfferInput> updatedOffers = {};
+  final List<ProviderCoupon> _coupons;
+  (String, CouponInput)? createdCoupon;
+  final List<String> redeemedCodes = [];
+  BusinessStats? statsResult;
+
+  /// Codes the fake accepts once; any other code is unknown.
+  final Set<String> validCodes = {'K7QM4XPA'};
 
   @override
   Future<Business?> mine() async => business;
@@ -73,4 +89,51 @@ class FakeBusinessRepository implements BusinessRepository {
     endsAt: input.endsAt,
     active: input.active,
   );
+
+  @override
+  Future<List<ProviderCoupon>> coupons() async => List.of(_coupons);
+
+  @override
+  Future<ProviderCoupon> createCoupon(String offerId, CouponInput input) async {
+    createdCoupon = (offerId, input);
+    final coupon = ProviderCoupon(
+      id: 'c-${_coupons.length + 1}',
+      offerId: offerId,
+      offerTitle: 'Oferta',
+      title: input.title.trim(),
+      discountType: input.discountType,
+      discountValue: input.discountValue,
+      stock: input.stock,
+      claimedCount: 0,
+      redeemedCount: 0,
+      remaining: input.stock,
+      perUserLimit: input.perUserLimit,
+      validUntil: DateTime(2030, 1, 20, 20),
+      claimable: true,
+    );
+    _coupons.insert(0, coupon);
+    return coupon;
+  }
+
+  @override
+  Future<Redemption> redeem(String code) async {
+    final normalized = code.replaceAll(RegExp('[^A-Za-z0-9]'), '').toUpperCase();
+    redeemedCodes.add(normalized);
+    if (!validCodes.remove(normalized)) {
+      throw const ApiFailure(statusCode: 404, code: 'COUPON_CODE_NOT_FOUND', message: 'Not found');
+    }
+    return Redemption(
+      code: normalized,
+      couponTitle: '10% extra',
+      discountType: DiscountType.percent,
+      discountValue: 10,
+      offerTitle: 'Pan francés 2x1',
+      offerPrice: 5,
+      customerFirstName: 'Ana',
+      redeemedAt: panelNow,
+    );
+  }
+
+  @override
+  Future<BusinessStats> stats() async => statsResult!;
 }

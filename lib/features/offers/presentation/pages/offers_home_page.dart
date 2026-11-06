@@ -27,6 +27,12 @@ class OffersHomePage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Ofertas cerca de ti'),
         actions: [
+          IconButton(
+            key: const Key('offers.myCoupons'),
+            tooltip: 'Mis cupones',
+            icon: const Icon(Icons.confirmation_number_outlined),
+            onPressed: () => context.push(AppRoutes.myCoupons),
+          ),
           if (hasPosition)
             IconButton(
               key: const Key('offers.toggleView'),

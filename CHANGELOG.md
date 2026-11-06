@@ -3,6 +3,22 @@
 All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [0.3.0] - 2026-11-06
+
+Third sprint (Day 3 of the MVP): coupons, redemption and stats. This release completes the MVP.
+
+### Added
+
+- Coupons on the offer detail page, with their discount and stock, and a button to claim one.
+- "My coupons": every claimed coupon with its status (active, redeemed, expired), and a detail page that shows the code as a QR and as text (`K7QM-4XPA`).
+- Redemption for businesses: the cashier types the code and sees the customer's name and the amount to charge.
+- Coupons per offer in the business panel: list them with their counts and issue new ones (percentage or amount in soles, optional stock and per-user limit).
+- Business stats: headline numbers, redemption rate, top offers and a 7-day bar chart of claimed vs redeemed coupons with a legend, per-day details on tap and colors that work with color vision deficiency.
+
+### Changed
+
+- CI uses `actions/checkout` v7.
+
 ## [0.2.0] - 2026-11-05
 
 Second sprint (Day 2 of the MVP): offers near the user and the business panel.
@@ -41,5 +57,6 @@ First sprint (Day 1 of the MVP): app foundation and authentication.
 - CI on GitHub Actions (format, analyze, tests, debug APK) and Dependabot.
 - Nightly backup scripts to the `wip/nightly` branch.
 
+[0.3.0]: https://github.com/geops-app/geops-mobile/releases/tag/v0.3.0
 [0.2.0]: https://github.com/geops-app/geops-mobile/releases/tag/v0.2.0
 [0.1.0]: https://github.com/geops-app/geops-mobile/releases/tag/v0.1.0

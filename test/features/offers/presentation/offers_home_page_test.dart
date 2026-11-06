@@ -4,10 +4,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:geops_mobile/app/app.dart';
 import 'package:geops_mobile/core/location/location_service.dart';
 import 'package:geops_mobile/features/auth/data/auth_providers.dart';
+import 'package:geops_mobile/features/coupons/data/coupons_repository_impl.dart';
 import 'package:geops_mobile/features/offers/data/offers_repository_impl.dart';
 import 'package:geops_mobile/features/offers/presentation/providers/offers_providers.dart';
 
 import '../../../helpers/fake_auth_repository.dart';
+import '../../../helpers/fake_coupons.dart';
 import '../../../helpers/fake_offers.dart';
 
 void main() {
@@ -22,6 +24,7 @@ void main() {
           locationServiceProvider.overrideWithValue(location),
           offersRepositoryProvider.overrideWithValue(offers),
           offersViewProvider.overrideWith(ListFirstView.new),
+          couponsRepositoryProvider.overrideWithValue(FakeCouponsRepository(available: [])),
         ],
         child: const GeopsApp(),
       ),

@@ -8,7 +8,12 @@ import '../../features/auth/presentation/pages/splash_page.dart';
 import '../../features/auth/presentation/providers/auth_controller.dart';
 import '../../features/business/presentation/pages/business_form_page.dart';
 import '../../features/business/presentation/pages/business_home_page.dart';
+import '../../features/business/presentation/pages/coupon_form_page.dart';
 import '../../features/business/presentation/pages/offer_form_page.dart';
+import '../../features/business/presentation/pages/redeem_page.dart';
+import '../../features/business/presentation/pages/stats_page.dart';
+import '../../features/coupons/presentation/pages/coupon_detail_page.dart';
+import '../../features/coupons/presentation/pages/my_coupons_page.dart';
 import '../../features/offers/presentation/pages/offer_detail_page.dart';
 import '../../features/offers/presentation/pages/offers_home_page.dart';
 import 'app_routes.dart';
@@ -35,6 +40,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             path: 'offers/:offerId',
             builder: (context, state) => OfferDetailPage(offerId: state.pathParameters['offerId']!),
           ),
+          GoRoute(
+            path: 'coupons',
+            builder: (context, state) => const MyCouponsPage(),
+            routes: [
+              GoRoute(
+                path: ':couponId',
+                builder: (context, state) => CouponDetailPage(couponId: state.pathParameters['couponId']!),
+              ),
+            ],
+          ),
         ],
       ),
       GoRoute(
@@ -47,7 +62,15 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: 'offers/:offerId',
             builder: (context, state) => OfferFormPage(offerId: state.pathParameters['offerId']),
+            routes: [
+              GoRoute(
+                path: 'coupons/new',
+                builder: (context, state) => CouponFormPage(offerId: state.pathParameters['offerId']!),
+              ),
+            ],
           ),
+          GoRoute(path: 'redeem', builder: (context, state) => const RedeemPage()),
+          GoRoute(path: 'stats', builder: (context, state) => const StatsPage()),
         ],
       ),
     ],
