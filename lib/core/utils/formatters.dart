@@ -16,6 +16,9 @@ abstract final class Formatters {
   /// `S/ 5.00` (Peruvian soles).
   static String price(double amount) => 'S/ ${amount.toStringAsFixed(2)}';
 
+  /// `K7QM4XPA` shown as `K7QM-4XPA`, easier to read aloud or type at the counter.
+  static String couponCode(String code) => code.length == 8 ? '${code.substring(0, 4)}-${code.substring(4)}' : code;
+
   /// `12/11/2026 18:00`.
   static String dateTime(DateTime value) => DateFormat('dd/MM/yyyy HH:mm').format(value);
 
