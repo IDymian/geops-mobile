@@ -19,7 +19,19 @@ class BusinessHomePage extends ConsumerWidget {
     final hasBusiness = business.value != null;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Mi negocio'), actions: const [LogoutButton()]),
+      appBar: AppBar(
+        title: const Text('Mi negocio'),
+        actions: [
+          if (hasBusiness)
+            IconButton(
+              key: const Key('business.stats'),
+              tooltip: 'Estadísticas',
+              icon: const Icon(Icons.insights_outlined),
+              onPressed: () => context.push(AppRoutes.stats),
+            ),
+          const LogoutButton(),
+        ],
+      ),
       floatingActionButton: hasBusiness
           ? FloatingActionButton.extended(
               key: const Key('business.newOffer'),
@@ -97,6 +109,13 @@ class _Panel extends ConsumerWidget {
                 onPressed: () => context.push(AppRoutes.businessProfile),
               ),
             ),
+          ),
+          const SizedBox(height: 8),
+          FilledButton.tonalIcon(
+            key: const Key('business.redeem'),
+            onPressed: () => context.push(AppRoutes.redeem),
+            icon: const Icon(Icons.qr_code_scanner),
+            label: const Text('Canjear cupón'),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(4, 16, 4, 8),

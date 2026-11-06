@@ -1,7 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../coupons/data/models/coupon_models.dart';
 import '../../../offers/data/models/offer_models.dart';
 import '../../domain/entities/business.dart';
+import '../../domain/entities/business_coupons.dart';
 
 part 'business_models.freezed.dart';
 part 'business_models.g.dart';
@@ -68,6 +70,129 @@ abstract class ManagedOfferModel with _$ManagedOfferModel {
   );
 }
 
+@freezed
+abstract class ProviderCouponModel with _$ProviderCouponModel {
+  const factory ProviderCouponModel({
+    required String id,
+    required String offerId,
+    required String offerTitle,
+    required String title,
+    required DiscountTypeModel discountType,
+    required double discountValue,
+    int? stock,
+    required int claimedCount,
+    required int redeemedCount,
+    int? remaining,
+    required int perUserLimit,
+    required DateTime validUntil,
+    required bool claimable,
+  }) = _ProviderCouponModel;
+
+  const ProviderCouponModel._();
+
+  factory ProviderCouponModel.fromJson(Map<String, Object?> json) => _$ProviderCouponModelFromJson(json);
+
+  ProviderCoupon toEntity() => ProviderCoupon(
+    id: id,
+    offerId: offerId,
+    offerTitle: offerTitle,
+    title: title,
+    discountType: discountType.toEntity(),
+    discountValue: discountValue,
+    stock: stock,
+    claimedCount: claimedCount,
+    redeemedCount: redeemedCount,
+    remaining: remaining,
+    perUserLimit: perUserLimit,
+    validUntil: validUntil.toLocal(),
+    claimable: claimable,
+  );
+}
+
+@freezed
+abstract class RedemptionModel with _$RedemptionModel {
+  const factory RedemptionModel({
+    required String code,
+    required String couponTitle,
+    required DiscountTypeModel discountType,
+    required double discountValue,
+    required String offerTitle,
+    required double offerPrice,
+    String? customerFirstName,
+    required DateTime redeemedAt,
+  }) = _RedemptionModel;
+
+  const RedemptionModel._();
+
+  factory RedemptionModel.fromJson(Map<String, Object?> json) => _$RedemptionModelFromJson(json);
+
+  Redemption toEntity() => Redemption(
+    code: code,
+    couponTitle: couponTitle,
+    discountType: discountType.toEntity(),
+    discountValue: discountValue,
+    offerTitle: offerTitle,
+    offerPrice: offerPrice,
+    customerFirstName: customerFirstName,
+    redeemedAt: redeemedAt.toLocal(),
+  );
+}
+
+@freezed
+abstract class DailyStatModel with _$DailyStatModel {
+  /// [date] is a calendar day in Lima time (`2030-01-10`), not an instant.
+  const factory DailyStatModel({required String date, required int claimed, required int redeemed}) = _DailyStatModel;
+
+  const DailyStatModel._();
+
+  factory DailyStatModel.fromJson(Map<String, Object?> json) => _$DailyStatModelFromJson(json);
+
+  DailyStat toEntity() => DailyStat(date: DateTime.parse(date), claimed: claimed, redeemed: redeemed);
+}
+
+@freezed
+abstract class OfferStatModel with _$OfferStatModel {
+  const factory OfferStatModel({
+    required String offerId,
+    required String title,
+    required int claimed,
+    required int redeemed,
+  }) = _OfferStatModel;
+
+  const OfferStatModel._();
+
+  factory OfferStatModel.fromJson(Map<String, Object?> json) => _$OfferStatModelFromJson(json);
+
+  OfferStat toEntity() => OfferStat(offerId: offerId, title: title, claimed: claimed, redeemed: redeemed);
+}
+
+@freezed
+abstract class BusinessStatsModel with _$BusinessStatsModel {
+  const factory BusinessStatsModel({
+    required int totalOffers,
+    required int liveOffers,
+    required int couponsClaimed,
+    required int couponsRedeemed,
+    required int redemptionRate,
+    required List<DailyStatModel> daily,
+    required List<OfferStatModel> topOffers,
+  }) = _BusinessStatsModel;
+
+  const BusinessStatsModel._();
+
+  factory BusinessStatsModel.fromJson(Map<String, Object?> json) => _$BusinessStatsModelFromJson(json);
+
+  BusinessStats toEntity() => BusinessStats(
+    totalOffers: totalOffers,
+    liveOffers: liveOffers,
+    couponsClaimed: couponsClaimed,
+    couponsRedeemed: couponsRedeemed,
+    redemptionRate: redemptionRate,
+    daily: [for (final day in daily) day.toEntity()],
+    topOffers: [for (final offer in topOffers) offer.toEntity()],
+  );
+}
+
 /// Request bodies. Blank optional texts are sent as null; instants always in UTC.
 extension BusinessInputJson on BusinessInput {
   Map<String, Object?> toJson() => {
@@ -91,6 +216,16 @@ extension OfferInputJson on OfferInput {
     'startsAt': startsAt?.toUtc().toIso8601String(),
     'endsAt': endsAt.toUtc().toIso8601String(),
     'active': active,
+  };
+}
+
+extension CouponInputJson on CouponInput {
+  Map<String, Object?> toJson() => {
+    'title': title.trim(),
+    'discountType': discountType.name.toUpperCase(),
+    'discountValue': discountValue,
+    'stock': stock,
+    'perUserLimit': perUserLimit,
   };
 }
 

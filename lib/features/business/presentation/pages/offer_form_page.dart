@@ -11,6 +11,7 @@ import '../../domain/entities/business.dart';
 import '../business_failure_messages.dart';
 import '../business_validators.dart';
 import '../providers/business_providers.dart';
+import '../widgets/offer_coupons_section.dart';
 
 /// Publishes a new offer, or edits one when [offerId] is given.
 class OfferFormPage extends ConsumerStatefulWidget {
@@ -215,6 +216,8 @@ class _OfferFormPageState extends ConsumerState<OfferFormPage> {
                   ? const SizedBox.square(dimension: 20, child: CircularProgressIndicator(strokeWidth: 2))
                   : Text(_isEdit ? 'Guardar cambios' : 'Publicar oferta'),
             ),
+            // Coupons belong to a saved offer, so they appear only when editing.
+            if (_isEdit) OfferCouponsSection(offerId: widget.offerId!),
           ],
         ),
       ),
