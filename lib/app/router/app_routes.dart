@@ -9,6 +9,10 @@ abstract final class AppRoutes {
 
   static String offerDetail(String offerId) => '$home/offers/$offerId';
 
+  static const String myCoupons = '$home/coupons';
+
+  static String myCoupon(String userCouponId) => '$myCoupons/$userCouponId';
+
   /// Provider home: the business panel.
   static const String business = '/business';
 

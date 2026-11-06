@@ -9,6 +9,8 @@ import '../../features/auth/presentation/providers/auth_controller.dart';
 import '../../features/business/presentation/pages/business_form_page.dart';
 import '../../features/business/presentation/pages/business_home_page.dart';
 import '../../features/business/presentation/pages/offer_form_page.dart';
+import '../../features/coupons/presentation/pages/coupon_detail_page.dart';
+import '../../features/coupons/presentation/pages/my_coupons_page.dart';
 import '../../features/offers/presentation/pages/offer_detail_page.dart';
 import '../../features/offers/presentation/pages/offers_home_page.dart';
 import 'app_routes.dart';
@@ -34,6 +36,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: 'offers/:offerId',
             builder: (context, state) => OfferDetailPage(offerId: state.pathParameters['offerId']!),
+          ),
+          GoRoute(
+            path: 'coupons',
+            builder: (context, state) => const MyCouponsPage(),
+            routes: [
+              GoRoute(
+                path: ':couponId',
+                builder: (context, state) => CouponDetailPage(couponId: state.pathParameters['couponId']!),
+              ),
+            ],
           ),
         ],
       ),
