@@ -22,5 +22,11 @@ abstract final class AppRoutes {
 
   static String editOffer(String offerId) => '$business/offers/$offerId';
 
+  static String newCoupon(String offerId) => '$business/offers/$offerId/coupons/new';
+
+  static const String redeem = '$business/redeem';
+
+  static const String stats = '$business/stats';
+
   static const Set<String> publicRoutes = {login, register};
 }
